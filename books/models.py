@@ -1,6 +1,5 @@
 from datetime import timezone
 from django.db import models
-# from accounts_manage.models import UserProfile
 from django.core.validators import MinLengthValidator
 from django.contrib.auth import get_user_model
 
