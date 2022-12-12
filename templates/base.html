@@ -20,7 +20,7 @@
             <img src="{% static 'images/book.png' %}" alt="book icon">
             <a href="{% url 'home page' %}">Home</a>
             <form action="{% url 'search results' %}" method="get">
-                <input name="q" type="text" placeholder="Search...">
+                <input name="q" type="text" aria-label="" placeholder="Search book...">
             </form>
             <ul>
                 <!--Only for user with logged in users-->

@@ -14,12 +14,7 @@ class SignUpForm(UserCreationForm):
         model = UserModel
         fields = (UserModel.USERNAME_FIELD,)
         field_classes = {'username': UsernameField}
-
-    def clean(self):
-       username = self.cleaned_data.get('username')
-       if UserModel.objects.filter(username=username).exists():
-            raise ValidationError("Username exists")
-       return self.cleaned_data
+        
 
     def save(self, commit=True): # create user with empty profile
         user = super().save(commit=commit)    # if create not empty profile with registration, add and profile info fields(first_name=self.cleaned_data['first_name'], last_name=self.cleaned_data['last_name']....)
