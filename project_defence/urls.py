@@ -17,6 +17,7 @@ urlpatterns = [
 ] 
 
 handler500='common.exceptions_handlers.handler_server_error'
+handler404='common.exceptions_handlers.page_not_found'
 
 
 
