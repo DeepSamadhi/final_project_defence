@@ -32,7 +32,7 @@ class SearchResultsView(ListView):
     model = Books
     template_name = "home-page.html"
 
-    def get_queryset(self):
+    def get_queryset(self):  # new
         query = self.request.GET.get("q")
         object_list = Books.objects.filter(
             Q(title__icontains=query)
