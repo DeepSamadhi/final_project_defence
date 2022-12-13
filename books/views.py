@@ -1,8 +1,10 @@
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import datetime, timedelta
 
@@ -32,7 +34,7 @@ def book_create(request):    # TODO: check how to create with CBV and use class 
             autor_exist = Autors.objects.get(name=request.POST['autor'])
             autor = autor_exist
         except:
-            autor = Autors.objects.create(name = request.POST['autor'])     # TODO: validate(if author exist!?!?!) typo by user when populate form, make '.to_lower' and compare
+            autor = Autors.objects.create(name = request.POST['autor'])     # TODO: validate(if author exist!?!?!) typo by user when populate form, make '.to_lower' and strip()
     
 
 
@@ -61,8 +63,11 @@ def book_create(request):    # TODO: check how to create with CBV and use class 
 
 
 def book_details(request, pk):
-    book = Books.objects.get(pk=pk)
-    remaining = 0
+    try:
+        book = Books.objects.get(pk=pk)
+    except ObjectDoesNotExist:
+        return render(None, 'book-does-not-exists.html')
+
     if book.is_borrow:
         remaining = (book.return_date - datetime.today().date()).days
         context = {'book': book,

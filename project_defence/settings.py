@@ -15,6 +15,8 @@ from pathlib import Path
 
 from django.urls import reverse_lazy
 
+from decouple import config
+
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
@@ -27,11 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x46ga_0qh9vjm9g_d_ep(d3^qyo5kl+g4@_5zg_a06oi^7wtzx'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 
 ALLOWED_HOSTS = []
 
