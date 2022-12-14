@@ -13,7 +13,8 @@ urlpatterns = [
     path('', include('common.urls')),
     path('accounts/', include('accounts_manage.urls')),
     path('books/', include('books.urls')),
-    path('forum/', include('forum.urls'))
+    path('forum/', include('forum.urls')),
+    path('messages/', include('personal_messages.urls'))
 ] 
 
 handler500='common.exceptions_handlers.handler_server_error'

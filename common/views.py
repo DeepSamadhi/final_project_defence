@@ -28,7 +28,9 @@ class SearchResultsView(ListView):
 
     def get_queryset(self):  # new
         query = self.request.GET.get("q")
-        object_list = Books.objects.filter(
-            Q(title__icontains=query)
-        )
+        object_list = Books.objects.filter(Q(title__icontains=query))
+        try:
+            object_list[0]
+        except IndexError:
+                return render(None, 'book-does-not-exists.html')
         return object_list

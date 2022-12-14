@@ -97,7 +97,11 @@ def filter_topics(request):
             if searched_category == 'All Topics':
                 object_list = Topics.objects.all()
             else:
-                object_list = Topics.objects.filter(category=searched_category)
+                 object_list = Topics.objects.filter(category=searched_category)
+            try:
+                object_list[0]
+            except IndexError:
+                return render(request, 'topic-does-not-exists.html', context={'filter_form': SearchDiscussionForm()})
     context = {
         'object_list': object_list,
         'filter_form': SearchDiscussionForm(),

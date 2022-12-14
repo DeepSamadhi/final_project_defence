@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'forum',
     'cloudinary',
     'django_filters',
+    'personal_messages',
     
 ]
 

@@ -66,7 +66,7 @@ def book_details(request, pk):
     try:
         book = Books.objects.get(pk=pk)
     except ObjectDoesNotExist:
-        return render(None, 'book-does-not-exists.html')
+        return render(request, 'book-does-not-exists.html')
 
     if book.is_borrow:
         remaining = (book.return_date - datetime.today().date()).days
@@ -130,7 +130,7 @@ def book_borrow(request, pk):
             book.borrow_counter += 1
             book.return_date = datetime.now() + timedelta(days=20)
             book.borrower = request.user.username
-            book.save()                                     # 'return_date' must be set to today and then calculate the remains day = (today+20days) - today
+            book.save()                                     
     return redirect('home page')
 
 
@@ -143,21 +143,4 @@ def book_returned(request, pk):
             book.return_date = None
             book.save()
     return redirect('home page')
-
-
-
-
-# def book_delete(request, pk):
-#     book = Books.objects.get(pk=pk)
-#     if request.method == 'GET':
-#         form = DeleteBookForm(instance=book)
-#     else:
-#         form = DeleteBookForm(request.POST, instance=book)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home page')
-#     context = {
-#         'form': form, 'book': book
-#         }
-#     return render(request, 'book-delete.html', context)
 
