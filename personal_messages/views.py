@@ -16,8 +16,6 @@ def create_conversation(request):
         context = {'form': CreateConversationForm()}
         return render(request, 'create-conversation.html', context)
 
-   
-    # participant = request.POST['participant']
     participant = UserModel.objects.get(id = request.POST['participant'])
     initiator = request.user
 

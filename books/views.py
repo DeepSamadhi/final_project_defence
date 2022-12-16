@@ -5,6 +5,7 @@ from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from datetime import datetime, timedelta
 
@@ -13,7 +14,8 @@ import cloudinary
 
 from books.models import Books, Autors, Publishers
 from accounts_manage.models import LibraryUser
-from books.forms import CreateBookForm, UpdateBookForm              # CreateAutorForm
+from books.forms import CreateBookForm
+from personal_messages.models import Conversations, Messages
 
 
 
@@ -86,7 +88,7 @@ class BookEditView(LoginRequiredMixin, UpdateView):
     template_name = 'book-edit.html'
     success_url = reverse_lazy('home page')
 
-    # cloudinary.uploader.destroy(book.image.public_id,invalidate=True)
+    cloudinary.uploader.destroy('image', resource_type = "image")
 
 
 class BookDeleteView(LoginRequiredMixin, DeleteView):
@@ -130,6 +132,40 @@ def book_borrow(request, pk):
             book.borrow_counter += 1
             book.return_date = datetime.now() + timedelta(days=20)
             book.borrower = request.user.username
+
+            conversation_A = Conversations.objects.filter(initiator=request.user, participant=book.owner)
+            print(conversation_A)
+            conversation_B = Conversations.objects.filter(initiator=book.owner, participant=request.user)
+            print(conversation_B)
+
+            if not conversation_A and not conversation_B:
+                new_conversation = Conversations(
+                    initiator=request.user,
+                    participant= book.owner,                    
+                )    
+                new_conversation.save()  
+
+                new_message = Messages(
+                message_content = f'Hello, I would like to borrow {book.title}',
+                message_to_conversation = new_conversation,
+                message_author = request.user
+                )
+                new_message.save()
+
+            elif conversation_A.exists():
+                new_message = Messages.objects.create(
+                    message_content = f'Hello, I would like to borrow {book.title}.',
+                    message_author = request.user,
+                    message_to_conversation = conversation_A[0],
+                )
+                new_message.save()
+            else:
+                new_message = Messages.objects.create(
+                    message_content = f'Hello, I would like to borrow {book.title}.',
+                    message_author = request.user,
+                    message_to_conversation = conversation_B[0],
+                )
+                new_message.save()
             book.save()                                     
     return redirect('home page')
 

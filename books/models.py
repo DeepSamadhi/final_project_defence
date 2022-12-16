@@ -58,7 +58,7 @@ class Autors(models.Model):
 
 class Books(models.Model):
     class Meta:
-        ordering = ('book_id',)
+        ordering = ('-book_id',)
 
     book_id = models.AutoField(primary_key=True, unique=True)
     title = models.CharField(max_length = 30)
