@@ -61,7 +61,7 @@ class Books(models.Model):
         ordering = ('-book_id',)
 
     book_id = models.AutoField(primary_key=True, unique=True)
-    title = models.CharField(max_length = 30)
+    title = models.CharField(max_length = 234)
     description = models.TextField(max_length=300, validators=(MinLengthValidator(10),), blank=True, null=True)  # TODO: 
     image = cloudinary_models.CloudinaryField(null=True, blank=True,) 
     genre = models.CharField(max_length = 30, choices=GENRES_CHOICES)   

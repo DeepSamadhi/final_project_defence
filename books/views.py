@@ -49,7 +49,7 @@ def book_create(request):    # TODO: check how to create with CBV and use class 
 
         title= request.POST['title']
         description= request.POST['description']
-        image1=request.FILES['image']
+        image1=request.POST.get('image', False)  # get choosen image or set the default
         genre= request.POST['genre']
         owner = request.user
         year_of_publication=request.POST['year_of_publication']
@@ -87,8 +87,6 @@ class BookEditView(LoginRequiredMixin, UpdateView):
     fields = ['title', 'description', 'image', 'genre', 'autor', 'publisher', 'year_of_publication']      # TODO: how to update image field
     template_name = 'book-edit.html'
     success_url = reverse_lazy('home page')
-
-    cloudinary.uploader.destroy('image', resource_type = "image")
 
 
 class BookDeleteView(LoginRequiredMixin, DeleteView):
